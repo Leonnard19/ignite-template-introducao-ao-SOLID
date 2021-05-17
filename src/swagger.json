@@ -73,7 +73,7 @@
       }
     },
 
-    "/users/{id}" : {
+    "/users/profile/{id}" : {
       "get" : {
         "tags" : ["Users"],
         "summary" : "List by ID",
@@ -172,15 +172,17 @@
     },
   
     "/users/all" : {
+      "get" : {
         "tags" : ["Users"],
         "summary" : "List all users",
         "description" : "List all users if the user is an administrator",
         "parameters" : [
         {
+          "in" : "header",
           "name" : "user_id",
-          "in" : "headers",
           "schema" : {
-            "type" : "string"
+            "type" : "string",
+            "format" : "uuid"
           }
         }
       ],
@@ -219,6 +221,7 @@
             }
           }
         }
+      }
     }
   }
 }

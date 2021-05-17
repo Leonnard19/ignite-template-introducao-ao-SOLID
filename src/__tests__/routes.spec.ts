@@ -59,7 +59,7 @@ describe('[PATCH] /users/:user_id/admin', () => {
   });
 });
 
-describe('[GET] /users/:user_id', () => {
+describe('[GET] /users/profile/:user_id', () => {
   it('should be able to get user profile by ID', async () => {
     const usersRepository = UsersRepository.getInstance();
 
@@ -68,7 +68,7 @@ describe('[GET] /users/:user_id', () => {
       email: String(Math.random()),
     });
 
-    const response = await request(app).get(`/users/${user.id}`);
+    const response = await request(app).get(`/users/profile/${user.id}`);
 
     const parsedResponse = {
       ...response.body,
@@ -84,13 +84,13 @@ describe('[GET] /users/:user_id', () => {
   });
 
   it('should not be able to show profile of a non existing user', async () => {
-    const response = await request(app).get(`/users/${v4()}`).expect(404);
+    const response = await request(app).get(`/users/profile/${v4()}`).expect(404);
 
     expect(response.body.error).toBeTruthy();
   });
 });
 
-describe('[GET] /users', () => {
+describe('[GET] /users/all', () => {
   it('should be able to list all users', async () => {
     const usersRepository = UsersRepository.getInstance();
 
@@ -111,7 +111,7 @@ describe('[GET] /users', () => {
       email: String(Math.random()),
     });
 
-    const response = await request(app).get('/users').set('user_id', user1.id);
+    const response = await request(app).get('/users/all').set('user_id', user1.id);
 
     expect(
       response.body.map(res => ({
@@ -132,7 +132,7 @@ describe('[GET] /users', () => {
       email: String(Math.random()),
     });
 
-    const response = await request(app).get('/users').set('user_id', user.id).expect(400);
+    const response = await request(app).get('/users/all').set('user_id', user.id).expect(400);
 
     expect(response.body.error).toBeTruthy();
   });
@@ -145,13 +145,13 @@ describe('[GET] /users', () => {
       email: String(Math.random()),
     });
 
-    const response = await request(app).get('/users').set('user_id', user.id).expect(400);
+    const response = await request(app).get('/users/all').set('user_id', user.id).expect(400);
 
     expect(response.body.error).toBeTruthy();
   });
 
   it('should not be able to a non existing user get list of all users', async () => {
-    const response = await request(app).get('/users').set('user_id', v4()).expect(400);
+    const response = await request(app).get('/users/all').set('user_id', v4()).expect(400);
 
     expect(response.body.error).toBeTruthy();
   });
